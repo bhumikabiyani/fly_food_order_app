@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fly Food Order Form | Tulle Hazelrigg Lab</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="http://www.columbia.edu/~db2941/flyfoodtool/app.css">
+  <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script>
+  $(function() {
+    $( "#datepicker" ).datepicker({
+      showWeek: true,
+      firstDay: 1
+    });
+  });
+  </script>
+</head>
+<body>
+<center>
+<h1>Fly Food Order Form</h1> 
+<div class="box"><p>Your email: <input type="text" id="techs_email"></p>
+<br>
+<p>Fly food maker's email: <input type="text" id="students_email"></p>
+</div>
+<br>
+<div class="box"><p>Make fly food on: <input type="text" id="datepicker"></p>
+<br>
+<p>Vials: <input type="text" id="vials"></p>
+<br>
+<p>Bottles: <input type="text" id="bottles"></p>
+<br>
+<p>Antibiotics: <input type="checkbox" id="ab"></p>
+</div>
+<br>
+
+
+<div class="box"><p>Special Instructions:</p>
+<textarea style="width: 480px" id="spec_instr"></textarea>
+<br>
+</div>
+<br>
+<div id="submit_bttn"><div id="submit_txt">Submit</div></div>
+</center>
+ 
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#submit_bttn').click(function() {
+      //alert("at least it works...");
+      var today = new Date();
+      var date = today.getDate();
+      var month = today.getMonth()+1;
+      var start = 0;
+      var end = 5;
+      var sender_email = $('#techs_email').val();
+      var recipient_email = $('#students_email').val();
+      var foodDate = $('#datepicker').val();
+      var vials = $('#vials').val();
+      var bottles = $('#bottles').val();
+      var antibiotics = $('#ab').is(':checked') ? 'yes' : 'no';
+      var spec_instr = $('#spec_instr').val();
+
+      if(date < 10)
+         date = '0' + date.toString();
+      if(month < 10)
+         month = '0' + month.toString();
+      var todayAsString = month + '/' + date;
+
+      
+      if(foodDate === "")
+        alert("Please select a date!");
+      else if(foodDate.substring(start, end) === todayAsString)
+        alert("That's a very short notice! Call the food maker instead!");
+      else{
+        var message = '<p> Dear Student, </p> <p> Please make the food on ' + foodDate + '.' + ' We are going to need ' + vials + ' trails of vials and ' + bottles + ' trails of bottles. Add antibiotics: ' + antibiotics + '.</p>' + '<p> Special Instructions: ' + spec_instr + '</p>' + '<p>Tulle Hazelrigg Lab</p>';
+
+        $.ajax({
+          type: 'POST',
+          url: 'https://mandrillapp.com/api/1.0/messages/send.json',
+          data: {
+            'key': 'EHAgEggx5L6aqPpyNn62sA',
+            'message': {
+              'from_email': sender_email,
+              'to': [
+                  {
+                    'email': recipient_email,
+                    'type': 'to'
+                  },
+
+                  {
+                    'email': sender_email,
+                    'type': 'to'
+                  }
+
+                ],
+              'autotext': 'true',
+              'subject': 'Fly Food',
+              'html': message
+            }
+          }
+         }).done(function(response) {
+           alert("Sent!");
+         });
+      }
+  });
+
+});  
+</script>
+</body>
+</html>

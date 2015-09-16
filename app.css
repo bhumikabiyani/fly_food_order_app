@@ -1,0 +1,43 @@
+body{
+	padding: 25px;
+	overflow: auto; 
+	background: url("background.jpg") no-repeat center center fixed;
+	background-size:   cover;
+	font-family: 'Inconsolata',;
+}
+
+#submit_bttn{
+	height: 50px;
+	width: 100px;
+	border-radius: 10px;
+	background-color: #3A65DF;
+	cursor: pointer;
+	cursor: hand;
+}
+
+#submit_txt{
+	height: 50px;
+	width: 100px;
+	color: #FFFFFF;
+	display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+}
+
+#vials, #bottles{
+	width: 25px;
+}
+
+#spec_instr{
+	height: 100px;
+	width: 300px;
+}
+
+.box{
+	background-color: #F9F7CB;
+	border-radius: 10px;
+	padding: 20px;
+	width: 500px;
+	opacity: .95;
+	border: 20px;
+}
